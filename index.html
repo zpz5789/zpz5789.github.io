@@ -417,6 +417,157 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://www.zengpengzhan.com/2017/08/20/iOS9和iOS10推送集成区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zpz">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://upload.jianshu.io/users/upload_avatars/644999/0ba0d431ecac.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/240/h/240">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="☕️zpz的技术小栈">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/20/iOS9和iOS10推送集成区别/" itemprop="url">iOS9和iOS10推送集成区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-20T16:30:49+08:00">
+                2017-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="收到消息数据格式区别"><a href="#收到消息数据格式区别" class="headerlink" title="收到消息数据格式区别"></a>收到消息数据格式区别</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">//iOS9消息格式如下</div><div class="line"> //&#123;</div><div class="line"> //    aps =     &#123;</div><div class="line"> //        alert = &quot;\U65b0\U6d88\U606f\U6765\U4e86\U3002&quot;;</div><div class="line"> //        sound = default;</div><div class="line"> //    &#125;;</div><div class="line"> //    d = us60289150408047357911;</div><div class="line"> //    p = 0;</div><div class="line"> //    pustId = 45267;</div><div class="line"> //    pustType = 5;</div><div class="line"> //&#125;</div><div class="line"> </div><div class="line"> iOS10消息格式如下</div><div class="line"> //&#123;</div><div class="line"> //    aps =     &#123;</div><div class="line"> //        alert =         &#123;</div><div class="line"> //            body = sdfsfsdf;</div><div class="line"> //            subtitle = xxxx;</div><div class="line"> //            title = xxx;</div><div class="line"> //        &#125;;</div><div class="line"> //        sound = default;</div><div class="line"> //    &#125;;</div><div class="line"> //    d = us29253150408072030511;</div><div class="line"> //    p = 0;</div><div class="line"> //    pustId = 45267;</div><div class="line"> //    pustType = 5;</div><div class="line"> //&#125;</div></pre></td></tr></table></figure>
+<p>要根据具体数据格式进行解析，以适配iOS10+。</p>
+<h2 id="收到远程推送消息几种情况处理"><a href="#收到远程推送消息几种情况处理" class="headerlink" title="收到远程推送消息几种情况处理"></a>收到远程推送消息几种情况处理</h2><h3 id="前台接收消息情况"><a href="#前台接收消息情况" class="headerlink" title="前台接收消息情况"></a>前台接收消息情况</h3><p>前台接收消息即app处于打开正在运行的时候，此时，app收到远程推送时候<br>在iOS9系统下调用</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)application:(<span class="built_in">UIApplication</span> *)application didReceiveRemoteNotification</div><div class="line">:(<span class="built_in">NSDictionary</span> *)userInfo</div></pre></td></tr></table></figure>
+<p>iOS10系统下调用</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//iOS10新增：处理前台收到通知的代理方法</span></div><div class="line">-(<span class="keyword">void</span>)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(<span class="keyword">void</span> (^)(UNNotificationPresentationOptions))completionHandler&#123;</div><div class="line">    <span class="built_in">NSDictionary</span> * userInfo = notification.request.content.userInfo;</div><div class="line">    <span class="keyword">if</span>([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger <span class="keyword">class</span>]]) &#123;</div><div class="line">        <span class="comment">//应用处于前台时的远程推送接受</span></div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="comment">//应用处于前台时的本地推送接受</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">//当应用处于前台时提示设置，需要哪个可以设置哪一个</span></div><div class="line">    completionHandler(UNNotificationPresentationOptionSound|UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionAlert);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="后台接收消息情况"><a href="#后台接收消息情况" class="headerlink" title="后台接收消息情况"></a>后台接收消息情况</h3><p>后台接收消息，指app按下home键进入后台或者设备进入锁定状态，此时接收到远程推送消息<br>iOS9系统下调用：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)application:(<span class="built_in">UIApplication</span> *)application didReceiveRemoteNotification:(<span class="built_in">NSDictionary</span> *)userInfo</div></pre></td></tr></table></figure>
+<p>iOS10系统下调用：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//iOS10新增：处理后台点击通知的代理方法</span></div><div class="line">-(<span class="keyword">void</span>)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(<span class="keyword">void</span> (^)())completionHandler&#123;</div><div class="line">    <span class="built_in">NSDictionary</span> * userInfo = response.notification.request.content.userInfo;</div><div class="line">    <span class="keyword">if</span>([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger <span class="keyword">class</span>]]) &#123;</div><div class="line">        <span class="comment">//应用处于后台时的远程推送接受       </span></div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">        <span class="comment">//应用处于后台时的本地推送接受</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="app未启动的情况"><a href="#app未启动的情况" class="headerlink" title="app未启动的情况"></a>app未启动的情况</h3><p>在iOS9系统下，app接收远程推送消息调用Appdelegate中的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</div></pre></td></tr></table></figure>
+<p>其中<code>launchOptions</code>中可以获取推送消息内容，然后根据消息内容进行处理。</p>
+<p>在iOS10系统下，app接收远程推送消息分为两步</p>
+<ol>
+<li>先调用</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">//iOS10新增：处理后台点击通知的代理方法</div><div class="line">-(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler&#123;</div><div class="line">    NSDictionary * userInfo = response.notification.request.content.userInfo;</div><div class="line">    if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) &#123;</div><div class="line">        //应用处于后台时的远程推送接受</div><div class="line">        //必须加这句代码       </div><div class="line">    &#125;else&#123;</div><div class="line">        //应用处于后台时的本地推送接受</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">```   </div><div class="line"></div><div class="line">2.然后走AppDelegate中的</div></pre></td></tr></table></figure>
+<ul>
+<li>(BOOL)application:(UIApplication <em>)application didFinishLaunchingWithOptions:(NSDictionary </em>)launchOptions<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">其中，launchOption中包含推送消息内容。</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">## 总结</div><div class="line"></div><div class="line">- iOS9和iOS10由于收到消息内容格式不一样需要分开区别处理。</div><div class="line"> </div><div class="line">- 在iOS9系统下：app启动情况（包括前台和后台）都在 </div><div class="line"></div><div class="line">```objectivec</div><div class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>中处理推送消息，在app未启动情况下，在AppDelegate中的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</div></pre></td></tr></table></figure>
+<p>处理远程消息。</p>
+<ul>
+<li>在iOS10系统下：app在前台收到远程推送，在</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(<span class="keyword">void</span> (^)(UNNotificationPresentationOptions))completionHandler</div></pre></td></tr></table></figure>
+<p>方法中处理推送消息。<br>在后台或者未启动收到远程推送消息，在</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(<span class="keyword">void</span> (^)())completionHandler</div></pre></td></tr></table></figure>
+<p>方法中处理推送消息。</p>
+<p>###注意</p>
+<ul>
+<li>不论iOS9或者iOS10，launchOptions一般就是消息推送的内容。（如果是点击3D Touch点击iCon进入App，这个launchOptions就是3D Touch的相关数据字典）。如果是iOS10，最好判断下，不处理，因为iOS10的代理方法<code>userNotificationCenter: didReceiveNotificationResponse: withCompletionHandler:</code>会处理。普及一下，launchOptions参数：</li>
+<li>1.App直接启动，launchOptions为null<br>2.从他应用程序通过openURL:启动，则UIApplicationLaunchOptionsURLKey<br>对应的对象为启动URL（NSURL）,UIApplicationLaunchOptionsSourceApplicationKey<br>对应启动的源应用程序的bundle ID (NSString)；<br>3.从本地通知启动，则UIApplicationLaunchOptionsLocalNotificationKey对应的<br>是本地通知对象(UILocalNotification)；<br>4.从远程通知启动，则UIApplicationLaunchOptionsRemoteNotificationKey<br>对应的远程消息通知信息userInfo（NSDictionary）；<br>5.从点击3D Touch iCon启动，则UIApplicationLaunchOptionsShortcutItemKey<br>对应的是点击的iCon的信息。</li>
+</ul>
+<ul>
+<li>在前台收到推送消息，在iOS10系统的设备推送消息栏会收到一条推送消息同时应用中也会进行推送消息处理，也就是说你点击消息栏，还会进行一次推送消息处理。而iOS9系统下消息栏不会有推送消息记录，只有应用中会收到推送消息进行处理。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://www.zengpengzhan.com/2017/08/17/学习方法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1038,7 +1189,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
