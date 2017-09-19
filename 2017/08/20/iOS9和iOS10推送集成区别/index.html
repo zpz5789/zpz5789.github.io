@@ -99,7 +99,7 @@
 <meta property="og:url" content="http://www.zengpengzhan.com/2017/08/20/iOS9和iOS10推送集成区别/index.html">
 <meta property="og:site_name" content="☕️zpz的技术小栈">
 <meta property="og:description" content="收到消息数据格式区别123456789101112131415161718192021222324252627//iOS9消息格式如下 //&amp;#123; //    aps =     &amp;#123; //        alert = &amp;quot;\U65b0\U6d88\U606f\U6765\U4e86\U3002&amp;quot;; //        sound = default; //">
-<meta property="og:updated_time" content="2017-09-19T03:27:45.000Z">
+<meta property="og:updated_time" content="2017-09-19T03:30:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS9和iOS10推送集成区别">
 <meta name="twitter:description" content="收到消息数据格式区别123456789101112131415161718192021222324252627//iOS9消息格式如下 //&amp;#123; //    aps =     &amp;#123; //        alert = &amp;quot;\U65b0\U6d88\U606f\U6765\U4e86\U3002&amp;quot;; //        sound = default; //">
@@ -341,8 +341,7 @@
 <p>方法中处理推送消息。<br>在后台或者未启动收到远程推送消息，在</p>
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-(<span class="keyword">void</span>)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(<span class="keyword">void</span> (^)())completionHandler</div></pre></td></tr></table></figure>
 <p>方法中处理推送消息。</p>
-<p>###注意</p>
-<ul>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ul>
 <li>不论iOS9或者iOS10，launchOptions一般就是消息推送的内容。（如果是点击3D Touch点击iCon进入App，这个launchOptions就是3D Touch的相关数据字典）。如果是iOS10，最好判断下，不处理，因为iOS10的代理方法<code>userNotificationCenter: didReceiveNotificationResponse: withCompletionHandler:</code>会处理。普及一下，launchOptions参数：</li>
 <li>1.App直接启动，launchOptions为null<br>2.从他应用程序通过openURL:启动，则UIApplicationLaunchOptionsURLKey<br>对应的对象为启动URL（NSURL）,UIApplicationLaunchOptionsSourceApplicationKey<br>对应启动的源应用程序的bundle ID (NSString)；<br>3.从本地通知启动，则UIApplicationLaunchOptionsLocalNotificationKey对应的<br>是本地通知对象(UILocalNotification)；<br>4.从远程通知启动，则UIApplicationLaunchOptionsRemoteNotificationKey<br>对应的远程消息通知信息userInfo（NSDictionary）；<br>5.从点击3D Touch iCon启动，则UIApplicationLaunchOptionsShortcutItemKey<br>对应的是点击的iCon的信息。</li>
 </ul>
@@ -546,7 +545,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#收到消息数据格式区别"><span class="nav-number">1.</span> <span class="nav-text">收到消息数据格式区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#收到远程推送消息几种情况处理"><span class="nav-number">2.</span> <span class="nav-text">收到远程推送消息几种情况处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前台接收消息情况"><span class="nav-number">2.1.</span> <span class="nav-text">前台接收消息情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台接收消息情况"><span class="nav-number">2.2.</span> <span class="nav-text">后台接收消息情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#app未启动的情况"><span class="nav-number">2.3.</span> <span class="nav-text">app未启动的情况</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#收到消息数据格式区别"><span class="nav-number">1.</span> <span class="nav-text">收到消息数据格式区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#收到远程推送消息几种情况处理"><span class="nav-number">2.</span> <span class="nav-text">收到远程推送消息几种情况处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前台接收消息情况"><span class="nav-number">2.1.</span> <span class="nav-text">前台接收消息情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台接收消息情况"><span class="nav-number">2.2.</span> <span class="nav-text">后台接收消息情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#app未启动的情况"><span class="nav-number">2.3.</span> <span class="nav-text">app未启动的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意"><span class="nav-number">2.4.</span> <span class="nav-text">注意</span></a></li></ol></li></ol></div>
             
 
           </div>
